@@ -1,0 +1,17 @@
+frontend:
+  build:
+    context: ../frontend/web-frontend
+    dockerfile: Dockerfile
+  container_name: coffeeshop-frontend
+  depends_on:
+    - keycloak
+    - catalog-service
+    - order-service
+    - payment-service
+    - notification-service
+    - loyalty-service
+  ports:
+    - "3000:80"
+  environment:
+    - NODE_ENV=production
+  restart: unless-stopped

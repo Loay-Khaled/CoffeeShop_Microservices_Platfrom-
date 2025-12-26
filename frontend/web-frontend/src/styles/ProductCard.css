@@ -1,0 +1,59 @@
+.product-card {
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.product-image {
+  height: 180px;
+  background: linear-gradient(135deg, var(--secondary-color) 0%, var(--accent-color) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-image .coffee-icon {
+  font-size: 64px;
+}
+
+.product-info {
+  padding: 20px;
+}
+
+.product-name {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text-color);
+}
+
+.product-price {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 8px;
+}
+
+.product-stock {
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.product-stock .in-stock {
+  color: var(--success-color);
+}
+
+.product-stock .out-of-stock {
+  color: var(--danger-color);
+}
+
+.add-to-cart {
+  width: 100%;
+}
