@@ -1,0 +1,43 @@
+{
+  "realm": "coffeeshop",
+  "enabled": true,
+  "registrationAllowed": false,
+  "users": [
+    {
+      "username": "customer1",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Customer",
+      "lastName": "One",
+      "email": "customer1@test.com",
+      "credentials": [
+        { "type": "password", "value": "123456", "temporary": false }
+      ]
+    },
+    {
+      "username": "admin1",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Admin",
+      "lastName": "One",
+      "email": "admin1@test.com",
+      "credentials": [
+        { "type": "password", "value": "123456", "temporary": false }
+      ]
+    }
+  ],
+  "roles": {
+    "realm": [{ "name": "customer" }, { "name": "admin" }]
+  },
+  "clients": [
+    {
+      "clientId": "web-frontend",
+      "enabled": true,
+      "publicClient": true,
+      "directAccessGrantsEnabled": true,
+      "standardFlowEnabled": true,
+      "redirectUris": ["http://localhost:3000/*"],
+      "webOrigins": ["http://localhost:3000"]
+    }
+  ]
+}
