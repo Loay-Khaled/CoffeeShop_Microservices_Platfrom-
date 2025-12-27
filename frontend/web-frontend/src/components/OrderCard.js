@@ -1,32 +1,32 @@
-import React from 'react';
-import '../styles/OrderCard.css';
+import React from "react";
+import "../styles/OrderCard.css";
 
-const OrderCard = ({ order, onViewDetails, onPayNow }) => {
+const OrderCard = ({ order, onViewDetails, onPayNow, onCancelOrder }) => {
   const getStatusClass = (status) => {
     switch (status?.toUpperCase()) {
-      case 'CREATED':
-        return 'status-created';
-      case 'PAID':
-        return 'status-paid';
-      case 'PROCESSING':
-        return 'status-processing';
-      case 'COMPLETED':
-        return 'status-completed';
-      case 'CANCELLED':
-        return 'status-cancelled';
+      case "CREATED":
+        return "status-created";
+      case "PAID":
+        return "status-paid";
+      case "PROCESSING":
+        return "status-processing";
+      case "COMPLETED":
+        return "status-completed";
+      case "CANCELLED":
+        return "status-cancelled";
       default:
-        return 'status-default';
+        return "status-default";
     }
   };
 
   const formatDate = (dateString) => {
-    if (!dateString) return 'N/A';
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
+    if (!dateString) return "N/A";
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
@@ -38,7 +38,7 @@ const OrderCard = ({ order, onViewDetails, onPayNow }) => {
           {order.status}
         </span>
       </div>
-      
+
       <div className="order-details">
         <p className="order-date">
           <strong>Date:</strong> {formatDate(order.createdAt)}
@@ -76,7 +76,7 @@ const OrderCard = ({ order, onViewDetails, onPayNow }) => {
             View Details
           </button>
         )}
-        {order.status === 'CREATED' && onPayNow && (
+        {order.status === "CREATED" && onPayNow && (
           <button
             className="btn btn-primary"
             onClick={() => onPayNow(order.id)}
@@ -84,6 +84,17 @@ const OrderCard = ({ order, onViewDetails, onPayNow }) => {
             Pay Now
           </button>
         )}
+        {(order.status === "CREATED" ||
+          order.status === "PENDING" ||
+          order.status === "PAID") &&
+          onCancelOrder && (
+            <button
+              className="btn btn-danger"
+              onClick={() => onCancelOrder(order.id)}
+            >
+              Cancel Order
+            </button>
+          )}
       </div>
     </div>
   );

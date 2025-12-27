@@ -1,17 +1,18 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import { useKeycloak } from '@react-keycloak/web';
-import { Toaster } from 'react-hot-toast';
-import { CartProvider } from './context/CartContext';
-import Navbar from './components/Navbar';
-import HomePage from './pages/HomePage';
-import CatalogPage from './pages/CatalogPage';
-import CartPage from './pages/CartPage';
-import OrdersPage from './pages/OrdersPage';
-import OrderDetailsPage from './pages/OrderDetailsPage';
-import CheckoutPage from './pages/CheckoutPage';
-import LoadingSpinner from './components/LoadingSpinner';
-import './styles/App.css';
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import { useKeycloak } from "@react-keycloak/web";
+import { Toaster } from "react-hot-toast";
+import { CartProvider } from "./context/CartContext";
+import Navbar from "./components/Navbar";
+import HomePage from "./pages/HomePage";
+import CatalogPage from "./pages/CatalogPage";
+import CartPage from "./pages/CartPage";
+import OrdersPage from "./pages/OrdersPage";
+import OrderDetailsPage from "./pages/OrderDetailsPage";
+import CheckoutPage from "./pages/CheckoutPage";
+import AdminPage from "./pages/AdminPage";
+import LoadingSpinner from "./components/LoadingSpinner";
+import "./styles/App.css";
 
 // Protected Route wrapper
 const ProtectedRoute = ({ children }) => {
@@ -69,6 +70,14 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute>
+                  <AdminPage />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
         </main>
         <footer className="footer">
@@ -81,13 +90,13 @@ function App() {
           toastOptions={{
             duration: 3000,
             style: {
-              background: '#333',
-              color: '#fff',
+              background: "#333",
+              color: "#fff",
             },
             success: {
               iconTheme: {
-                primary: '#6F4E37',
-                secondary: '#fff',
+                primary: "#6F4E37",
+                secondary: "#fff",
               },
             },
           }}

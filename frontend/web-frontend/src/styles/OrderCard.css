@@ -103,8 +103,25 @@
 .order-actions {
   display: flex;
   gap: 12px;
+  flex-wrap: wrap;
 }
 
 .order-actions .btn {
   flex: 1;
+  min-width: 100px;
+}
+
+.order-actions .btn-danger {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.order-actions .btn-danger:hover {
+  background-color: #c82333;
 }

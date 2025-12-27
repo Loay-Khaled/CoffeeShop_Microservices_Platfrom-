@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useKeycloak } from '@react-keycloak/web';
-import toast from 'react-hot-toast';
-import { orderApi, paymentApi } from '../services/api';
-import OrderCard from '../components/OrderCard';
-import LoadingSpinner from '../components/LoadingSpinner';
-import '../styles/OrdersPage.css';
+import React, { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { useKeycloak } from "@react-keycloak/web";
+import toast from "react-hot-toast";
+import { orderApi, paymentApi } from "../services/api";
+import OrderCard from "../components/OrderCard";
+import LoadingSpinner from "../components/LoadingSpinner";
+import "../styles/OrdersPage.css";
 
 const OrdersPage = () => {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ const OrdersPage = () => {
 
   const fetchOrders = useCallback(async () => {
     if (!keycloak.authenticated) {
-      navigate('/');
+      navigate("/");
       return;
     }
 
@@ -26,8 +26,8 @@ const OrdersPage = () => {
       const response = await orderApi.getMyOrders();
       setOrders(response.data);
     } catch (err) {
-      console.error('Error fetching orders:', err);
-      setError('Failed to load orders. Please try again later.');
+      console.error("Error fetching orders:", err);
+      setError("Failed to load orders. Please try again later.");
     } finally {
       setLoading(false);
     }
@@ -44,11 +44,24 @@ const OrdersPage = () => {
   const handlePayNow = async (orderId) => {
     try {
       await paymentApi.processPayment(orderId);
-      toast.success('Payment processed successfully!');
+      toast.success("Payment processed successfully!");
       fetchOrders(); // Refresh orders
     } catch (error) {
-      console.error('Payment error:', error);
-      toast.error('Payment failed. Please try again.');
+      console.error("Payment error:", error);
+      toast.error("Payment failed. Please try again.");
+    }
+  };
+
+  const handleCancelOrder = async (orderId) => {
+    if (!window.confirm("Are you sure you want to cancel this order?")) return;
+
+    try {
+      await orderApi.cancelOrder(orderId);
+      toast.success("Order cancelled successfully!");
+      fetchOrders(); // Refresh orders
+    } catch (error) {
+      console.error("Cancel order error:", error);
+      toast.error("Failed to cancel order. Please try again.");
     }
   };
 
@@ -82,7 +95,7 @@ const OrdersPage = () => {
             <p>Start by adding some items to your cart!</p>
             <button
               className="btn btn-primary"
-              onClick={() => navigate('/catalog')}
+              onClick={() => navigate("/catalog")}
             >
               Browse Menu
             </button>
@@ -95,6 +108,7 @@ const OrdersPage = () => {
                 order={order}
                 onViewDetails={handleViewDetails}
                 onPayNow={handlePayNow}
+                onCancelOrder={handleCancelOrder}
               />
             ))}
           </div>

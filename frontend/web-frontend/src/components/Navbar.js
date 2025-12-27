@@ -1,8 +1,8 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { useKeycloak } from '@react-keycloak/web';
-import { useCart } from '../context/CartContext';
-import '../styles/Navbar.css';
+import React from "react";
+import { Link } from "react-router-dom";
+import { useKeycloak } from "@react-keycloak/web";
+import { useCart } from "../context/CartContext";
+import "../styles/Navbar.css";
 
 const Navbar = () => {
   const { keycloak, initialized } = useKeycloak();
@@ -13,6 +13,11 @@ const Navbar = () => {
   const handleLogout = () => keycloak.logout();
   const handleRegister = () => keycloak.register();
 
+  // Check if user is admin
+  const isAdmin =
+    keycloak.tokenParsed?.preferred_username === "admin1" ||
+    keycloak.hasRealmRole?.("admin");
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
@@ -22,14 +27,27 @@ const Navbar = () => {
 
         <ul className="navbar-menu">
           <li>
-            <Link to="/" className="navbar-link">Home</Link>
+            <Link to="/" className="navbar-link">
+              Home
+            </Link>
           </li>
           <li>
-            <Link to="/catalog" className="navbar-link">Menu</Link>
+            <Link to="/catalog" className="navbar-link">
+              Menu
+            </Link>
           </li>
           {keycloak.authenticated && (
             <li>
-              <Link to="/orders" className="navbar-link">My Orders</Link>
+              <Link to="/orders" className="navbar-link">
+                My Orders
+              </Link>
+            </li>
+          )}
+          {keycloak.authenticated && isAdmin && (
+            <li>
+              <Link to="/admin" className="navbar-link admin-link">
+                🔧 Admin
+              </Link>
             </li>
           )}
         </ul>

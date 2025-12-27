@@ -1,16 +1,16 @@
-import axios from 'axios';
+import axios from "axios";
 
 // Base URLs for microservices
-const CATALOG_SERVICE_URL = 'http://localhost:8082/api';
-const ORDER_SERVICE_URL = 'http://localhost:8084/api';
-const PAYMENT_SERVICE_URL = 'http://localhost:8085/api';
+const CATALOG_SERVICE_URL = "http://localhost:8082/api";
+const ORDER_SERVICE_URL = "http://localhost:8084/api";
+const PAYMENT_SERVICE_URL = "http://localhost:8085/api";
 
 // Create axios instance with auth header
 const createAuthenticatedClient = (baseURL) => {
   const client = axios.create({ baseURL });
-  
+
   client.interceptors.request.use((config) => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -21,7 +21,7 @@ const createAuthenticatedClient = (baseURL) => {
     (response) => response,
     (error) => {
       if (error.response?.status === 401) {
-        localStorage.removeItem('token');
+        localStorage.removeItem("token");
         window.location.reload();
       }
       return Promise.reject(error);
@@ -37,24 +37,34 @@ const paymentClient = createAuthenticatedClient(PAYMENT_SERVICE_URL);
 
 // Catalog Service API
 export const catalogApi = {
-  getProducts: () => catalogClient.get('/catalog/items'),
+  getProducts: () => catalogClient.get("/catalog/items"),
   getProduct: (id) => catalogClient.get(`/catalog/items/${id}`),
-  createProduct: (product) => catalogClient.post('/catalog/items', product),
+  createProduct: (product) => catalogClient.post("/catalog/items", product),
+  updateProduct: (id, product) =>
+    catalogClient.put(`/catalog/items/${id}`, product),
+  deleteProduct: (id) => catalogClient.delete(`/catalog/items/${id}`),
 };
 
 // Order Service API
 export const orderApi = {
   createOrder: (customer) => orderClient.post(`/orders?customer=${customer}`),
   getOrder: (id) => orderClient.get(`/orders/${id}`),
-  getMyOrders: () => orderClient.get('/orders/me'),
-  addItemToOrder: (orderId, productId, quantity) => 
+  getMyOrders: () => orderClient.get("/orders/me"),
+  getAllOrders: () => orderClient.get("/orders/all"),
+  addItemToOrder: (orderId, productId, quantity) =>
     orderClient.post(`/orders/${orderId}/items`, { productId, quantity }),
+  updateOrderStatus: (orderId, status) =>
+    orderClient.put(`/orders/${orderId}/status?status=${status}`),
+  deleteOrder: (orderId) => orderClient.delete(`/orders/${orderId}`),
+  cancelOrder: (orderId) => orderClient.put(`/orders/${orderId}/cancel`),
 };
 
 // Payment Service API
 export const paymentApi = {
-  processPayment: (orderId) => paymentClient.post(`/payments/process/${orderId}`),
-  getPaymentStatus: (orderId) => paymentClient.get(`/payments/status/${orderId}`),
+  processPayment: (orderId) =>
+    paymentClient.post(`/payments/process/${orderId}`),
+  getPaymentStatus: (orderId) =>
+    paymentClient.get(`/payments/status/${orderId}`),
 };
 
 export { catalogClient, orderClient, paymentClient };
